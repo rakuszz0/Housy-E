@@ -101,7 +101,7 @@ export default function MyBooking(props) {
         onSuccess: function (result) {
           /* You may add your own implementation here */
           console.log(result);
-          history("/history/");
+          history("/history");
         },
         onPending: function (result) {
           /* You may add your own implementation here */
