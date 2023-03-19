@@ -1,23 +1,24 @@
 package handlers
 
 import (
+	"context"
+	"fmt"
 	housesdto "housy/dto/house"
 	dto "housy/dto/result"
 	"housy/models"
 	"housy/repositories"
 	"net/http"
+	"os"
 	"strconv"
 
-	// "context"
-
-	// "github.com/cloudinary/cloudinary-go/v2"
-	// "github.com/cloudinary/cloudinary-go/v2/api/uploader"
+	"github.com/cloudinary/cloudinary-go/v2"
+	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
 	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 	"gorm.io/datatypes"
 )
 
-var path_file = "http://localhost:5000/uploads/"
+var path_file = os.Getenv("PATH_FILE")
 
 type handlerHouse struct {
 	HouseRepository repositories.HouseRepository
@@ -33,8 +34,12 @@ func (h *handlerHouse) FindHouses(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
+	// for i, p := range houses {
+	// 	houses[i].Image = path_file + p.Image
+	// }
 	for i, p := range houses {
-		houses[i].Image = path_file + p.Image
+		imagePath := os.Getenv("PATH_FILE") + p.Image
+		houses[i].Image = imagePath
 	}
 
 	response := dto.SuccessResult{Code: http.StatusOK, Data: houses}
@@ -51,9 +56,10 @@ func (h *handlerHouse) FindHousesFilter(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	// for i, p := range houses {
-	// 	houses[i].Image = path_file + p.Image
-	// }
+	for i, p := range houses {
+		houses[i].Image = "PATH_FILE" + p.Image
+	}
+	// houses.Image = os.Getenv("PATH_FILE") + houses.Image
 
 	response := dto.SuccessResult{Code: http.StatusOK, Data: houses}
 	return c.JSON(http.StatusOK, response)
@@ -67,7 +73,8 @@ func (h *handlerHouse) GetHouse(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()})
 	}
 
-	house.Image = path_file + house.Image
+	// house.Image = path_file + house.Image
+	house.Image = os.Getenv("PATH_FILE") + house.Image
 
 	response := dto.SuccessResult{Code: http.StatusOK, Data: convertResponseHouse(house)}
 	return c.JSON(http.StatusOK, response)
@@ -98,7 +105,20 @@ func (h *handlerHouse) CreateHouse(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, dto.ErrorResult{Code: http.StatusInternalServerError, Message: err.Error()})
 	}
+	var ctx = context.Background()
+	var CLOUD_NAME = os.Getenv("CLOUD_NAME")
+	var API_KEY = os.Getenv("API_KEY")
+	var API_SECRET = os.Getenv("API_SECRET")
 
+	// Add your Cloudinary credentials ...
+	cld, _ := cloudinary.NewFromParams(CLOUD_NAME, API_KEY, API_SECRET)
+
+	// Upload file to Cloudinary ...
+	resp, err := cld.Upload.Upload(ctx, filename, uploader.UploadParams{Folder: "uploads"})
+
+	if err != nil {
+		fmt.Println(err.Error())
+	}
 	house := models.House{
 		Name:        request.Name,
 		CityName:    request.CityName,
@@ -108,7 +128,7 @@ func (h *handlerHouse) CreateHouse(c echo.Context) error {
 		Amenities:   request.Amenities,
 		Bedroom:     request.Bedroom,
 		Bathroom:    request.Bathroom,
-		Image:       filename,
+		Image:       resp.SecureURL,
 		Description: request.Description,
 	}
 
@@ -143,6 +163,16 @@ func (h *handlerHouse) UpdateHouse(c echo.Context) error {
 		Description: c.FormValue("description"),
 	}
 
+	var ctx = context.Background()
+	var CLOUD_NAME = os.Getenv("CLOUD_NAME")
+	var API_KEY = os.Getenv("API_KEY")
+	var API_SECRET = os.Getenv("API_SECRET")
+
+	// Add your Cloudinary credentials ...
+	cld, _ := cloudinary.NewFromParams(CLOUD_NAME, API_KEY, API_SECRET)
+
+	// Upload file to Cloudinary ...
+	resp, err := cld.Upload.Upload(ctx, dataContext, uploader.UploadParams{Folder: "uploads"})
 	id, _ := strconv.Atoi(c.Param("id"))
 	house, err := h.HouseRepository.GetHouse(int(id))
 	if err != nil {
@@ -186,7 +216,7 @@ func (h *handlerHouse) UpdateHouse(c echo.Context) error {
 	}
 
 	if request.Image != "" {
-		house.Image = request.Image
+		house.Image = resp.SecureURL
 	}
 
 	if request.Description != "" {
