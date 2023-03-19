@@ -14,6 +14,7 @@ export default function ContentData(props) {
     const response = await API.get("/houses");
     return response.data.data;
   });
+  console.log(houses)
 
   if (props.house != undefined) {
     return (
