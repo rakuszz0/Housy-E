@@ -74,7 +74,7 @@ func (h *handlerHouse) GetHouse(c echo.Context) error {
 	}
 
 	// house.Image = path_file + house.Image
-	house.Image = os.Getenv("PATH_FILE") + house.Image
+	// house.Image = os.Getenv("PATH_FILE") + house.Image
 
 	response := dto.SuccessResult{Code: http.StatusOK, Data: convertResponseHouse(house)}
 	return c.JSON(http.StatusOK, response)
