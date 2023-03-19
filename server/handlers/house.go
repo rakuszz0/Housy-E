@@ -37,10 +37,10 @@ func (h *handlerHouse) FindHouses(c echo.Context) error {
 	// for i, p := range houses {
 	// 	houses[i].Image = path_file + p.Image
 	// }
-	for i, p := range houses {
-		imagePath := os.Getenv("PATH_FILE") + p.Image
-		houses[i].Image = imagePath
-	}
+	// for i, p := range houses {
+	// 	imagePath := os.Getenv("PATH_FILE") + p.Image
+	// 	houses[i].Image = imagePath
+	// }
 
 	response := dto.SuccessResult{Code: http.StatusOK, Data: houses}
 	return c.JSON(http.StatusOK, response)
