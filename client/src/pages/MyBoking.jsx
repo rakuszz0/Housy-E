@@ -254,7 +254,7 @@ export default function MyBooking(props) {
                 <p className=" m-0 ps-3 py-2">Total</p>
               </Col>
               <Col className="d-flex align-items-center" lg={2}>
-                <p className="m-0 text-danger fw-bold">: Rp{p}</p>
+                <p className="m-0 text-danger fw-bold">: {p.toLocaleString("id-ID", { style: "currency", currency: "IDR" })}</p>
               </Col>
             </Row>
           </Row>
