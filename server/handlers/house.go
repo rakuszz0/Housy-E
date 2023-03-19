@@ -56,9 +56,9 @@ func (h *handlerHouse) FindHousesFilter(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	for i, p := range houses {
-		houses[i].Image = "PATH_FILE" + p.Image
-	}
+	// for i, p := range houses {
+	// 	houses[i].Image = "PATH_FILE" + p.Image
+	// }
 	// houses.Image = os.Getenv("PATH_FILE") + houses.Image
 
 	response := dto.SuccessResult{Code: http.StatusOK, Data: houses}
