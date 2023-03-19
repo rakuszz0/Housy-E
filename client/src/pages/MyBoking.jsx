@@ -69,11 +69,11 @@ export default function MyBooking(props) {
   console.log(house.type_rent, "type")
   let p = 0
   if (house.type_rent === "Day") { //Day
-    p = house?.price * ((checkout - checkin) / (1000 * 60 * 60 * 24))
+    p = house?.price * Math.floor((checkout - checkin) / (1000 * 60 * 60 * 24))
   } else if (house.type_rent === "Month") { //Month
-    p = house?.price * ((checkout - checkin) / (1000 * 60 * 60 * 24 * 30))
+    p = house?.price * Math.floor((checkout - checkin) / (1000 * 60 * 60 * 24 * 30))
   } else if (house.type_rent === "Year") { //Year
-    p = house?.price * ((checkout - checkin) / (1000 * 60 * 60 * 24 * 30 * 12))
+    p = house?.price * Math.floor((checkout - checkin) / (1000 * 60 * 60 * 24 * 30 * 12))
   }
 
   const handleTransaction = useMutation(async () => {
