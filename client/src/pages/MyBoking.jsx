@@ -9,7 +9,7 @@ import Container from "react-bootstrap/esm/Container";
 import Elipse from "../assets/img/Ellipse 7.png";
 import Elipsee from "../assets/img/Ellipse 8.png";
 import Line from "../assets/img/Line 9.png";
-import CodeQr from "../assets/img/qr-code.png";
+import CodeQr from "../assets/img/woyy.png";
 import { useNavigate, useParams } from "react-router-dom";
 import { UserContext } from "../context/userContext";
 import { useMutation, useQuery } from "react-query";

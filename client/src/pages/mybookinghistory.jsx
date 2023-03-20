@@ -8,7 +8,7 @@ import Elipse from "../assets/img/Ellipse 7.png";
 import Elipsee from "../assets/img/Ellipse 8.png";
 import Line from "../assets/img/Line 9.png";
 import Button from "react-bootstrap/esm/Button";
-import CodeQr from "../assets/img/qr-code.png";
+import CodeQr from "../assets/img/woyy.png";
 import { useQuery } from "react-query";
 import { API } from "../config/api";
 import { UserContext } from "../context/userContext";
@@ -37,7 +37,7 @@ export default function MybookingHistory() {
       {transactions?.map((value, index) => {
         if (value.user.id === state.user.id && value.status_payment === "success") {
           return (
-            <Container className="myc fmb bg-black " style={{ width: "70%", marginTop: "100px", marginBottom: "50px" }}>
+            <Container className="myc fmb bg-white " style={{ width: "70%", marginTop: "100px", marginBottom: "50px" }}>
               <div className="border border-3 p-4 pe-0 pb-0">
                 <Row className="d-flex jcb">
                   <Col className="" md="auto" lg={4}>

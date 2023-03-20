@@ -8,7 +8,7 @@ import Elipse from "../assets/img/Ellipse 7.png";
 import Elipsee from "../assets/img/Ellipse 8.png";
 import Line from "../assets/img/Line 9.png";
 import Button from "react-bootstrap/esm/Button";
-import CodeQr from "../assets/img/qr-code.png";
+import CodeQr from "../assets/img/woyy.png";
 import { useQuery } from "react-query";
 import { API } from "../config/api";
 import { UserContext } from "../context/userContext";
